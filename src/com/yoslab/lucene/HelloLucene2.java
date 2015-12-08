@@ -16,13 +16,14 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.QueryBuilder;
 import org.apache.lucene.util.Version;
 
-public class HelloLucene {
+public class HelloLucene2 {
   
   public static void main(String args[]) throws IOException {
     
@@ -47,13 +48,12 @@ public class HelloLucene {
     
     // Query q = new TermQuery(new Term("title", querystr));
     
-    // 3. search
+    // 3. search (no use collector)
     int hitsPerPage = 10;
     IndexReader reader = DirectoryReader.open(index);
     IndexSearcher searcher = new IndexSearcher(reader);
-    TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage);
-    searcher.search(q, collector);
-    ScoreDoc[] hits = collector.topDocs().scoreDocs;
+    TopDocs result = searcher.search(q, 100);
+    ScoreDoc[] hits = result.scoreDocs;
     
     // 4. display results
     System.out.println("Found " + hits.length + " hits.");
