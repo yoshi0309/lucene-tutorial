@@ -6,6 +6,7 @@ import java.io.StringReader;
 
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.core.UpperCaseFilter;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -18,8 +19,10 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 public class HelloTokenizer {
   
   public static void main(String[] args) throws IOException {
-    final String str = "aaa bbb ccc ddd 123";
+    String str = "<p>My father's name was John & Kinsella. It's an Irish name.</p>";
+    
     Reader reader = new StringReader(str);
+    reader = new HTMLStripCharFilter(reader);
     
     Tokenizer tokenizer = new WhitespaceTokenizer();
     tokenizer.setReader(reader);
